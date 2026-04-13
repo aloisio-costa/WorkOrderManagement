@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace WorkOrderManagement.Domain.Technicians;
 
-namespace WorkOrderManagement.Domain.Technicians
+public interface ITechnicianRepository
 {
-    internal interface ITechnicianRepository
-    {
-    }
+    Task<Technician?> GetByIdAsync(Guid id);
+    Task<IReadOnlyList<Technician>> GetAllAsync();
 }

@@ -2,8 +2,8 @@
 
 public interface IIncidentRepository
 {
-    Task AddAsync(Incident incident, CancellationToken cancellationToken = default);
-    Task<Incident?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
-    Task<IReadOnlyList<Incident>> GetAllAsync(CancellationToken cancellationToken = default);
-    Task UpdateAsync(Incident incident, CancellationToken cancellationToken = default);
+    Task AddAsync(Incident incident);
+    Task<Incident?> GetByIdAsync(Guid id);
+    Task<IReadOnlyList<Incident>> GetAllAsync();
+    Task UpdateAsync(Incident incident);
 }
