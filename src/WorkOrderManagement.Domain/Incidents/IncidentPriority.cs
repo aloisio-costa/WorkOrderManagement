@@ -1,0 +1,9 @@
+﻿namespace WorkOrderManagement.Domain.Incidents;
+
+public enum IncidentPriority
+{
+    Low = 1,
+    Medium = 2,
+    High = 3,
+    Critical = 4
+}
