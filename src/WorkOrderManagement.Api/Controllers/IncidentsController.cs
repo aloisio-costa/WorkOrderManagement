@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WorkOrderManagement.Api.Contracts.Incidents;
 using WorkOrderManagement.Application.Incidents.Commands.CreateIncident;
 using WorkOrderManagement.Application.Incidents.Queries.GetIncidentById;
@@ -7,6 +8,7 @@ using WorkOrderManagement.Domain.Incidents;
 
 namespace WorkOrderManagement.Api.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class IncidentsController : ControllerBase

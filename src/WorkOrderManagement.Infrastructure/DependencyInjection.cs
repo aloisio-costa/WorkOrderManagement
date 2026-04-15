@@ -1,12 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WorkOrderManagement.Application.Abstractions.Authentication;
 using WorkOrderManagement.Application.Abstractions.Persistence;
 using WorkOrderManagement.Domain.Buildings;
 using WorkOrderManagement.Domain.Incidents;
 using WorkOrderManagement.Domain.Technicians;
 using WorkOrderManagement.Domain.Users;
 using WorkOrderManagement.Domain.WorkOrders;
+using WorkOrderManagement.Infrastructure.Authentication;
 using WorkOrderManagement.Infrastructure.Persistence;
 using WorkOrderManagement.Infrastructure.Persistence.Repositories;
 
@@ -31,6 +33,8 @@ public static class DependencyInjection
         services.AddScoped<IUserRepository, UserRepository>();
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IPasswordHasher, PasswordHasher>();
+        services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 
         return services;
     }

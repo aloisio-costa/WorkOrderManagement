@@ -1,6 +1,7 @@
 ﻿using WorkOrderManagement.Domain.Buildings;
 using WorkOrderManagement.Domain.Technicians;
 using WorkOrderManagement.Domain.Users;
+using WorkOrderManagement.Infrastructure.Authentication;
 
 namespace WorkOrderManagement.Infrastructure.Persistence.Seed;
 
@@ -24,10 +25,13 @@ public static class SeedData
 
         if (!dbContext.Users.Any())
         {
+            var passwordHasher = new PasswordHasher();
+
             dbContext.Users.AddRange(
-                new User("Admin User", "admin@company.com", "hashed-password-placeholder", UserRole.Admin),
-                new User("Dispatcher User", "dispatcher@company.com", "hashed-password-placeholder", UserRole.Dispatcher),
-                new User("Technician User", "technician@company.com", "hashed-password-placeholder", UserRole.Technician));
+                new User("Admin User", "admin@company.com", passwordHasher.Hash("Admin123!"), UserRole.Admin),
+                new User("Dispatcher User", "dispatcher@company.com", passwordHasher.Hash("Dispatcher123!"), UserRole.Dispatcher),
+                new User("Technician User", "technician@company.com", passwordHasher.Hash("Technician123!"), UserRole.Technician),
+                new User("Viewer User", "viewer@company.com", passwordHasher.Hash("Viewer123!"), UserRole.Viewer));
         }
 
         await dbContext.SaveChangesAsync();

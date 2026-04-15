@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WorkOrderManagement.Api.Contracts.WorkOrders;
 using WorkOrderManagement.Application.WorkOrders.Commands.AssignWorkOrder;
 using WorkOrderManagement.Application.WorkOrders.Commands.CancelWorkOrder;
@@ -11,6 +12,7 @@ using WorkOrderManagement.Domain.WorkOrders;
 
 namespace WorkOrderManagement.Api.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class WorkOrdersController : ControllerBase
@@ -66,6 +68,7 @@ public class WorkOrdersController : ControllerBase
             result.Value);
     }
 
+    [Authorize(Roles = "Admin,Dispatcher")]
     [HttpPatch("{id:guid}/assign")]
     public async Task<IActionResult> Assign(Guid id, AssignWorkOrderHttpRequest request)
     {
@@ -85,6 +88,7 @@ public class WorkOrdersController : ControllerBase
         return Ok(result.Value);
     }
 
+    [Authorize(Roles = "Admin,Technician")]
     [HttpPatch("{id:guid}/start")]
     public async Task<IActionResult> Start(Guid id)
     {
@@ -98,6 +102,7 @@ public class WorkOrdersController : ControllerBase
         return Ok(result.Value);
     }
 
+    [Authorize(Roles = "Admin,Technician")]
     [HttpPatch("{id:guid}/complete")]
     public async Task<IActionResult> Complete(Guid id)
     {
@@ -111,6 +116,7 @@ public class WorkOrdersController : ControllerBase
         return Ok(result.Value);
     }
 
+    [Authorize(Roles = "Admin,Dispatcher")]
     [HttpPatch("{id:guid}/cancel")]
     public async Task<IActionResult> Cancel(Guid id)
     {

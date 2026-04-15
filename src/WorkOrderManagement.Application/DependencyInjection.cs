@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using WorkOrderManagement.Application.Auth.Commands.Login;
 using WorkOrderManagement.Application.Incidents.Commands.CreateIncident;
 using WorkOrderManagement.Application.Incidents.Queries.GetIncidentById;
 using WorkOrderManagement.Application.Incidents.Queries.GetIncidents;
@@ -16,6 +17,8 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
+        services.AddScoped<LoginService>();
+
         services.AddScoped<CreateIncidentService>();
         services.AddScoped<GetIncidentByIdService>();
         services.AddScoped<GetIncidentsService>();
