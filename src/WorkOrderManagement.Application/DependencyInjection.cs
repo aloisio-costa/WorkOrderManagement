@@ -2,7 +2,11 @@
 using WorkOrderManagement.Application.Incidents.Commands.CreateIncident;
 using WorkOrderManagement.Application.Incidents.Queries.GetIncidentById;
 using WorkOrderManagement.Application.Incidents.Queries.GetIncidents;
+using WorkOrderManagement.Application.WorkOrders.Commands.AssignWorkOrder;
+using WorkOrderManagement.Application.WorkOrders.Commands.CancelWorkOrder;
+using WorkOrderManagement.Application.WorkOrders.Commands.CompleteWorkOrder;
 using WorkOrderManagement.Application.WorkOrders.Commands.CreateWorkOrderFromIncident;
+using WorkOrderManagement.Application.WorkOrders.Commands.StartWorkOrder;
 using WorkOrderManagement.Application.WorkOrders.Queries.GetWorkOrderById;
 using WorkOrderManagement.Application.WorkOrders.Queries.GetWorkOrders;
 
@@ -17,6 +21,10 @@ public static class DependencyInjection
         services.AddScoped<GetIncidentsService>();
 
         services.AddScoped<CreateWorkOrderFromIncidentService>();
+        services.AddScoped<AssignWorkOrderService>();
+        services.AddScoped<StartWorkOrderService>();
+        services.AddScoped<CompleteWorkOrderService>();
+        services.AddScoped<CancelWorkOrderService>();
         services.AddScoped<GetWorkOrderByIdService>();
         services.AddScoped<GetWorkOrdersService>();
 
