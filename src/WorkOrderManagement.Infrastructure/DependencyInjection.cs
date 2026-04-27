@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using WorkOrderManagement.Application.Abstractions.Authentication;
 using WorkOrderManagement.Application.Abstractions.Persistence;
 using WorkOrderManagement.Domain.Buildings;
@@ -18,13 +19,19 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(
         this IServiceCollection services,
-        IConfiguration configuration)
+        IConfiguration configuration,
+        IHostEnvironment environment)
     {
-        var connectionString = configuration.GetConnectionString("DefaultConnection")
-            ?? throw new InvalidOperationException("Connection string 'DefaultConnection' was not found.");
-
-        services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(connectionString));
+        if (environment.IsEnvironment("Testing"))
+        {
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseInMemoryDatabase("TestDb"));
+        }
+        else
+        {
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+        }
 
         services.AddScoped<IIncidentRepository, IncidentRepository>();
         services.AddScoped<IWorkOrderRepository, WorkOrderRepository>();
