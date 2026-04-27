@@ -1,4 +1,5 @@
-﻿using WorkOrderManagement.Application.Abstractions.Persistence;
+﻿using Microsoft.Extensions.Caching.Memory;
+using WorkOrderManagement.Application.Abstractions.Persistence;
 using WorkOrderManagement.Application.Common.Results;
 using WorkOrderManagement.Application.WorkOrders.Dtos;
 using WorkOrderManagement.Domain.Incidents;
@@ -11,15 +12,18 @@ public class CreateWorkOrderFromIncidentService
     private readonly IIncidentRepository _incidentRepository;
     private readonly IWorkOrderRepository _workOrderRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMemoryCache _cache;
 
     public CreateWorkOrderFromIncidentService(
         IIncidentRepository incidentRepository,
         IWorkOrderRepository workOrderRepository,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+         IMemoryCache cache)
     {
         _incidentRepository = incidentRepository;
         _workOrderRepository = workOrderRepository;
         _unitOfWork = unitOfWork;
+        _cache = cache;
     }
 
     public async Task<Result<WorkOrderDto>> ExecuteAsync(CreateWorkOrderFromIncidentRequest request)
@@ -45,6 +49,8 @@ public class CreateWorkOrderFromIncidentService
 
         await _workOrderRepository.AddAsync(workOrder);
         await _unitOfWork.SaveChangesAsync();
+
+        _cache.Remove("workorders");
 
         return Result<WorkOrderDto>.Success(workOrder.ToDto());
     }
