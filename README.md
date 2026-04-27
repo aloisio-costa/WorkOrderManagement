@@ -8,7 +8,7 @@ This project demonstrates:
 - Environment-based infrastructure configuration
 - Unit and integration testing
 
-  ## Architecture
+## Architecture
 
 The project follows a Clean Architecture approach:
 
@@ -22,7 +22,7 @@ Key concepts:
 - Repository pattern
 - Unit of Work
 
-  ## Features
+## Features
 
 - Incident management
 - Work order lifecycle (assign, start, complete, cancel)
@@ -30,7 +30,7 @@ Key concepts:
 - JWT authentication (Admin / Technician roles)
 - Protected endpoints
 
-  ## Tech Stack
+## Tech Stack
 
 - .NET 9
 - ASP.NET Core Web API
@@ -39,7 +39,7 @@ Key concepts:
 - xUnit + FluentAssertions
 - Integration testing with WebApplicationFactory
 
-  ## Tests
+## Tests
 
 Run all tests:
 
@@ -49,7 +49,7 @@ Includes:
 - Unit tests for domain rules
 - Integration tests for API endpoints
 
-  ## Why this project
+## Why this project
 
 I built this project to strengthen my backend skills and demonstrate:
 
