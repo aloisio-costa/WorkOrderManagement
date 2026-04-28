@@ -56,3 +56,22 @@ I built this project to strengthen my backend skills and demonstrate:
 - Designing systems beyond simple CRUD
 - Applying domain-driven design concepts
 - Building testable and maintainable architectures
+
+## RabbitMQ Setup (Local)
+
+To run RabbitMQ locally using Docker:
+
+```bash
+docker run -d --hostname workorder-rabbitmq --name workorder-rabbitmq \
+  -p 5672:5672 \
+  -p 15672:15672 \
+  rabbitmq:3-managemen
+```
+Management UI:
+http://localhost:15672
+
+Credentials:
+
+Username: guest
+
+Password: guest
