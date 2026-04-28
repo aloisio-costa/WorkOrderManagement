@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace WorkOrderManagement.Infrastructure.Messaging;
 
-namespace WorkOrderManagement.Infrastructure.Messaging
+public sealed class RabbitMqOptions
 {
-    internal class RabbitMqOptions
-    {
-    }
+    public const string SectionName = "RabbitMq";
+
+    public string HostName { get; init; } = "localhost";
+    public string UserName { get; init; } = "guest";
+    public string Password { get; init; } = "guest";
+    public int Port { get; init; } = 5672;
 }
