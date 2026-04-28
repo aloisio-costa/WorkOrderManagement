@@ -12,6 +12,8 @@ using WorkOrderManagement.Domain.WorkOrders;
 using WorkOrderManagement.Infrastructure.Authentication;
 using WorkOrderManagement.Infrastructure.Persistence;
 using WorkOrderManagement.Infrastructure.Persistence.Repositories;
+using WorkOrderManagement.Application.Abstractions.Messaging;
+using WorkOrderManagement.Infrastructure.Messaging;
 
 namespace WorkOrderManagement.Infrastructure;
 
@@ -22,15 +24,32 @@ public static class DependencyInjection
         IConfiguration configuration,
         IHostEnvironment environment)
     {
+        services.Configure<RabbitMqOptions>(options =>
+        {
+            var section = configuration.GetSection(RabbitMqOptions.SectionName);
+
+            options.HostName = section["HostName"] ?? "localhost";
+            options.UserName = section["UserName"] ?? "guest";
+            options.Password = section["Password"] ?? "guest";
+
+            if (int.TryParse(section["Port"], out var port))
+            {
+                options.Port = port;
+            }
+        });
+
         if (environment.IsEnvironment("Testing"))
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseInMemoryDatabase("TestDb"));
+            services.AddSingleton<IMessagePublisher, NoOpMessagePublisher>();
         }
         else
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            services.AddSingleton<IMessagePublisher, RabbitMqMessagePublisher>();
+            services.AddHostedService<WorkOrderAssignedConsumer>();
         }
 
         services.AddScoped<IIncidentRepository, IncidentRepository>();
