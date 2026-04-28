@@ -51,6 +51,8 @@ public sealed class WorkOrderAssignedConsumer : BackgroundService
         {
             try
             {
+                _logger.LogInformation("Received WorkOrderAssignedEvent message");
+
                 var json = Encoding.UTF8.GetString(eventArgs.Body.ToArray());
 
                 var message = JsonSerializer.Deserialize<WorkOrderAssignedEvent>(json);

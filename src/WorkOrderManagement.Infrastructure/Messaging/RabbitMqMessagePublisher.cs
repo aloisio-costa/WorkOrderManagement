@@ -1,7 +1,8 @@
-﻿using System.Text;
-using System.Text.Json;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
+using System.Text;
+using System.Text.Json;
 using WorkOrderManagement.Application.Abstractions.Messaging;
 
 namespace WorkOrderManagement.Infrastructure.Messaging;
@@ -9,10 +10,14 @@ namespace WorkOrderManagement.Infrastructure.Messaging;
 public sealed class RabbitMqMessagePublisher : IMessagePublisher
 {
     private readonly RabbitMqOptions _options;
+    private readonly ILogger<WorkOrderAssignedConsumer> _logger;
 
-    public RabbitMqMessagePublisher(IOptions<RabbitMqOptions> options)
+    public RabbitMqMessagePublisher(
+        IOptions<RabbitMqOptions> options, 
+        ILogger<WorkOrderAssignedConsumer> logger)
     {
         _options = options.Value;
+        _logger = logger;
     }
 
     public async Task PublishAsync<TMessage>(TMessage message, string queueName)
@@ -42,5 +47,7 @@ public sealed class RabbitMqMessagePublisher : IMessagePublisher
             exchange: string.Empty,
             routingKey: queueName,
             body: body);
+
+        _logger.LogInformation("Published WorkOrderAssignedEvent message");
     }
 }
