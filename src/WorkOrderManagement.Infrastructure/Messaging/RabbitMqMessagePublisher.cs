@@ -40,7 +40,9 @@ public sealed class RabbitMqMessagePublisher : IMessagePublisher
             autoDelete: false,
             arguments: null);
 
-        var json = JsonSerializer.Serialize(message);
+        var json = message is string text
+            ? text
+            : JsonSerializer.Serialize(message);
         var body = Encoding.UTF8.GetBytes(json);
 
         await channel.BasicPublishAsync(
