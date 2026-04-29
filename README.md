@@ -30,7 +30,7 @@ Key concepts:
 - JWT authentication (Admin / Technician roles)
 - Protected endpoints
 - In-memory caching with cache invalidation
-- RabbitMQ event publishing and background consumer
+- RabbitMQ event publishing with Outbox Pattern and background consumer
 
 ## Tech Stack
 
@@ -43,6 +43,26 @@ Key concepts:
 - Docker
 - xUnit + FluentAssertions
 - Integration testing with WebApplicationFactory
+
+## Messaging and Outbox Pattern
+
+The project uses RabbitMQ to simulate asynchronous event-driven communication.
+
+When a work order is assigned, the application stores a `WorkOrderAssignedEvent` in an `OutboxMessages` table instead of publishing directly to RabbitMQ.
+
+A background processor reads pending outbox messages, publishes them to RabbitMQ, and marks them as processed.
+
+This improves reliability because the database update and event creation happen together in the same transaction.
+
+Flow:
+
+```txt
+Assign WorkOrder
+- Save WorkOrder + OutboxMessage
+- OutboxProcessor publishes to RabbitMQ
+- Consumer receives message
+- Simulated notification is logged
+```
 
 ## Tests
 
