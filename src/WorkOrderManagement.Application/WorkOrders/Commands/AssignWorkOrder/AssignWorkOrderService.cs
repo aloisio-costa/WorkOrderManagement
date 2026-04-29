@@ -15,17 +15,20 @@ public class AssignWorkOrderService
     private readonly ITechnicianRepository _technicianRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMessagePublisher _messagePublisher;
+    private readonly IOutboxService _outboxService;
 
     public AssignWorkOrderService(
         IWorkOrderRepository workOrderRepository,
         ITechnicianRepository technicianRepository,
         IUnitOfWork unitOfWork,
-        IMessagePublisher messagePublisher)
+        IMessagePublisher messagePublisher,
+        IOutboxService outboxService)
     {
         _workOrderRepository = workOrderRepository;
         _technicianRepository = technicianRepository;
         _unitOfWork = unitOfWork;
         _messagePublisher = messagePublisher;
+        _outboxService = outboxService;
     }
 
     public async Task<Result<WorkOrderDto>> ExecuteAsync(AssignWorkOrderRequest request)
@@ -59,14 +62,13 @@ public class AssignWorkOrderService
         }
 
         await _workOrderRepository.UpdateAsync(workOrder);
-        await _unitOfWork.SaveChangesAsync();
 
-        await _messagePublisher.PublishAsync(
-            new WorkOrderAssignedEvent(
-                workOrder.Id,
-                technician.Id,
-                DateTime.UtcNow),
-            "workorder.assigned");
+        _outboxService.Add(new WorkOrderAssignedEvent(
+            workOrder.Id,
+            technician.Id,
+            DateTime.UtcNow));
+
+        await _unitOfWork.SaveChangesAsync();
 
         return Result<WorkOrderDto>.Success(workOrder.ToDto());
     }
