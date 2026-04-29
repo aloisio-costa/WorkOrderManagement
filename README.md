@@ -29,6 +29,8 @@ Key concepts:
 - Technician assignment
 - JWT authentication (Admin / Technician roles)
 - Protected endpoints
+- In-memory caching with cache invalidation
+- RabbitMQ event publishing and background consumer
 
 ## Tech Stack
 
@@ -36,6 +38,9 @@ Key concepts:
 - ASP.NET Core Web API
 - Entity Framework Core (SQL Server)
 - JWT Authentication
+- IMemoryCache
+- RabbitMQ
+- Docker
 - xUnit + FluentAssertions
 - Integration testing with WebApplicationFactory
 
@@ -65,7 +70,7 @@ To run RabbitMQ locally using Docker:
 docker run -d --hostname workorder-rabbitmq --name workorder-rabbitmq \
   -p 5672:5672 \
   -p 15672:15672 \
-  rabbitmq:3-managemen
+  rabbitmq:3-management
 ```
 Management UI:
 http://localhost:15672
