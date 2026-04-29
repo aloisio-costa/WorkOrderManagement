@@ -50,6 +50,7 @@ public static class DependencyInjection
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
             services.AddSingleton<IMessagePublisher, RabbitMqMessagePublisher>();
+            services.AddHostedService<OutboxProcessor>();
             services.AddHostedService<WorkOrderAssignedConsumer>();
         }
 
