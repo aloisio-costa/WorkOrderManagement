@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WorkOrderManagement.Application.Abstractions.Authentication;
+using WorkOrderManagement.Application.Abstractions.Messaging;
 using WorkOrderManagement.Application.Abstractions.Persistence;
 using WorkOrderManagement.Domain.Buildings;
 using WorkOrderManagement.Domain.Incidents;
@@ -10,10 +11,10 @@ using WorkOrderManagement.Domain.Technicians;
 using WorkOrderManagement.Domain.Users;
 using WorkOrderManagement.Domain.WorkOrders;
 using WorkOrderManagement.Infrastructure.Authentication;
-using WorkOrderManagement.Infrastructure.Persistence;
-using WorkOrderManagement.Infrastructure.Persistence.Repositories;
-using WorkOrderManagement.Application.Abstractions.Messaging;
 using WorkOrderManagement.Infrastructure.Messaging;
+using WorkOrderManagement.Infrastructure.Persistence;
+using WorkOrderManagement.Infrastructure.Persistence.Outbox;
+using WorkOrderManagement.Infrastructure.Persistence.Repositories;
 
 namespace WorkOrderManagement.Infrastructure;
 
@@ -61,6 +62,8 @@ public static class DependencyInjection
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+
+        services.AddScoped<IOutboxService, OutboxService>();
 
         return services;
     }
